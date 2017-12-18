@@ -1,10 +1,12 @@
 // delete this
 var game;
+const timePerQuestion = 10;
+const maxQuestions = 5;
 
 let GameData = {
 	questions: [{
 		// note: questions are taken from quiz at http://www.playbuzz.com/katelynw11/how-well-do-you-know-harry-potter
-		question: "Who's birthday party did Harry, Ron, and Hermione go to in The Chamber of Secrets?",
+		questionText: "Who's birthday party did Harry, Ron, and Hermione go to in The Chamber of Secrets?",
 		answers: [
 			"Nearly Headless Nick",
 			"Draco Malfoy",
@@ -14,7 +16,7 @@ let GameData = {
 		correctAnswer: "Nearly Headless Nick"
 
 	}, {
-		question: "What patronus does Luna Lovegood have?",
+		questionText: "What patronus does Luna Lovegood have?",
 		answers: [
 			"Lion",
 			"Horse",
@@ -23,7 +25,7 @@ let GameData = {
 		],
 		correctAnswer: "Rabbit"
 	}, {
-		question: "Who was the quidditch commentator in Harry's first years at Hogwarts?",
+		questionText: "Who was the quidditch commentator in Harry's first years at Hogwarts?",
 		answers: [
 			"Dean Thomas",
 			"Terry Boot",
@@ -34,7 +36,7 @@ let GameData = {
 
 			"Lee Jordan"
 	}, {
-		question: "Who disguised himself as Mad Eye Moody in The Goblet of Fire?",
+		questionText: "Who disguised himself as Mad Eye Moody in The Goblet of Fire?",
 		answers: [
 			"Barty Crouch Jr.",
 			"Vincent Crabbe",
@@ -44,7 +46,7 @@ let GameData = {
 		correctAnswer: "Barty Crouch Jr."
 
 	}, {
-		question: "What organization did Hermione start in her 4th year?",
+		questionText: "What organization did Hermione start in her 4th year?",
 		answers: [
 			"Wizards Against the Dark Arts",
 			"Dumbledore's Army",
@@ -53,7 +55,7 @@ let GameData = {
 		],
 		correctAnswer: "Society for the Promotion of Elfish Welfare"
 	}, {
-		question: "Which wand belongs to Harry?",
+		questionText: "Which wand belongs to Harry?",
 		answers: [
 			"Holly",
 			"Blackthorn",
@@ -63,7 +65,7 @@ let GameData = {
 		correctAnswer: "Holly"
 
 	}, {
-		question: "What potion did Harry take in order to get Slughorn's memories?",
+		questionText: "What potion did Harry take in order to get Slughorn's memories?",
 		answers: [
 			"Alihotsy Draught",
 			"Felix Felicis",
@@ -73,7 +75,7 @@ let GameData = {
 		correctAnswer: "Felix Felicis"
 
 	}, {
-		question: "Who did Hermione take to Slughorn's Christmas party?",
+		questionText: "Who did Hermione take to Slughorn's Christmas party?",
 		answers: [
 			"Cormac McLaggen",
 			"Ron Weasley",
@@ -83,7 +85,7 @@ let GameData = {
 		correctAnswer: "Cormac McLaggen"
 
 	}, {
-		question: "Who was the first to be stunned by the Basilisk?",
+		questionText: "Who was the first to be stunned by the Basilisk?",
 		answers: [
 			"Hermione Granger",
 			"Colin Creevey",
@@ -94,7 +96,7 @@ let GameData = {
 
 			"Mrs. Norris"
 	}, {
-		question: "Who ended up giving Harry permission to go to Hogsmeade?",
+		questionText: "Who ended up giving Harry permission to go to Hogsmeade?",
 		answers: [
 			"Albus Dumbledore",
 			"Vernon Dursley",
@@ -105,7 +107,7 @@ let GameData = {
 
 			"Sirius Black"
 	}, {
-		question: "What did Dumbledore leave for Hermione in his will?",
+		questionText: "What did Dumbledore leave for Hermione in his will?",
 		answers: ["An enchanted purse",
 			"The Tales of Beedle the Bard",
 			"A bezoar",
@@ -114,7 +116,7 @@ let GameData = {
 		correctAnswer: "The Tales of Beedle the Bard"
 
 	}, {
-		question: "Who found Harry, Ron, and Hermione in the woods in The Deathly Hallows?",
+		questionText: "Who found Harry, Ron, and Hermione in the woods in The Deathly Hallows?",
 		answers: [
 			"Snatchers",
 			"Fenrir Greyback",
@@ -124,7 +126,7 @@ let GameData = {
 		correctAnswer: "Fenrir Greyback"
 
 	}, {
-		question: "How did Harry survive underwater in the Triwizard Tournament?",
+		questionText: "How did Harry survive underwater in the Triwizard Tournament?",
 		answers: [
 			"Bubble-head charm",
 			"Gillyweed",
@@ -133,7 +135,7 @@ let GameData = {
 		],
 		correctAnswer: "Gillyweed"
 	}, {
-		question: "Who did Ron turn into when Harry, Ron, and Hermione snuck into the Ministry of Magic in The Deathly Hallows?",
+		questionText: "Who did Ron turn into when Harry, Ron, and Hermione snuck into the Ministry of Magic in The Deathly Hallows?",
 		answers: [
 			"Dirk Cresswell",
 			"Albert Runcorn",
@@ -144,7 +146,7 @@ let GameData = {
 
 			"Reginald Cattermole"
 	}, {
-		question: "What spell is used to save Hermione from the troll in The Sorcerer's Stone?",
+		questionText: "What spell is used to save Hermione from the troll in The Sorcerer's Stone?",
 		answers: [
 			"Confundus",
 			"Stupify",
@@ -153,7 +155,7 @@ let GameData = {
 		],
 		correctAnswer: "Wingardium Leviosa"
 	}, {
-		question: "What magazine does Luna's father publish?",
+		questionText: "What magazine does Luna's father publish?",
 		answers: [
 			"The Practical Potioneer",
 			"The Daily Prophet",
@@ -162,7 +164,7 @@ let GameData = {
 		],
 		correctAnswer: "The Quibbler"
 	}, {
-		question: "What was Harry's first broomstick?",
+		questionText: "What was Harry's first broomstick?",
 		answers: [
 			"Thunderbolt",
 			"Nimbus 2000",
@@ -171,7 +173,7 @@ let GameData = {
 		],
 		correctAnswer: "Nimbus 2000"
 	}, {
-		question: "How did Harry spend his first detention?",
+		questionText: "How did Harry spend his first detention?",
 		answers: [
 			"Going into the Forbidden Forest",
 			"Writing an essay",
@@ -180,7 +182,7 @@ let GameData = {
 		],
 		correctAnswer: "Going into the Forbidden Forest"
 	}, {
-		question: "What happened to Neville's parents so that they couldn't remember their son?",
+		questionText: "What happened to Neville's parents so that they couldn't remember their son?",
 		answers: [
 			"They lost their memories in an apperation accident",
 			"The Confundus Charm was used on them",
@@ -189,7 +191,7 @@ let GameData = {
 		],
 		correctAnswer: "The Cruciatus Curse was used on them"
 	}, {
-		question: "Who is Harry's godson?",
+		questionText: "Who is Harry's godson?",
 		answers: [
 			"Hugo Weasley",
 			"Lorcan Scamander",
@@ -198,7 +200,7 @@ let GameData = {
 		],
 		correctAnswer: "Teddy Lupin"
 	}, {
-		question: "What school did the Dursley's say they sent Harry to?",
+		questionText: "What school did the Dursley's say they sent Harry to?",
 		answers: [
 			"Walworth Academy",
 			"St. Grogory's Primary School",
@@ -209,7 +211,7 @@ let GameData = {
 
 			"St. Brutus' Secure Centre for Incurably Criminal Boys"
 	}, {
-		question: "What crime was Hagrid committed of in his time at Hogwarts?",
+		questionText: "What crime was Hagrid committed of in his time at Hogwarts?",
 		answers: [
 			"Casting a spell on a professor",
 			"Going into the Forbidden Forest",
@@ -218,7 +220,7 @@ let GameData = {
 		],
 		correctAnswer: "Opening the Chamber of Secrets"
 	}, {
-		question: "What does R.A.B. stand for?",
+		questionText: "What does R.A.B. stand for?",
 		answers: [
 			"Rats and Bats",
 			"Regulus Arcturus Black",
@@ -227,7 +229,7 @@ let GameData = {
 		],
 		correctAnswer: "Regulus Arcturus Black"
 	}, {
-		question: "What was the name of the female elf Dobby liked?",
+		questionText: "What was the name of the female elf Dobby liked?",
 		answers: [
 			"Winky",
 			"Minka",
@@ -236,7 +238,7 @@ let GameData = {
 		],
 		correctAnswer: "Winky"
 	}, {
-		question: "What is Harry's youngest son's name?",
+		questionText: "What is Harry's youngest son's name?",
 		answers: [
 			"Sirius",
 			"Albus",
@@ -244,225 +246,250 @@ let GameData = {
 			"James"
 		],
 		correctAnswer: "Albus"
-	}]
-
+	}],
+	timePerQuestion: timePerQuestion
 }
 
+// function createPermutation(min, max) {
+
+// }
 
 
 let TriviaGame = class {
 	constructor() {
-		this.score = 0;
-		this.missedQuestions = [];
-		this.correctQuestions = [];
-		this.gameInProgress = false;
-		this.currentQuestion = -1;
 		this.gameQuestions = GameData.questions;
-		this.startGame();
-
+		this.resetGame();
 	}
 
 	resetGame() {
 		// this restarts the game
 
 		// for this app, I think I can create a new game class. Maybe?
+		clearInterval(this.referenceToQuestionTimer);
 		this.score = 0;
 		this.missedQuestions = [];
 		this.correctQuestions = [];
+		this.incompleteQuestions = [];
 		this.gameInProgress = false;
 		this.currentQuestion = -1
-		this.startGame()
+		this.allowUserInput = false;
+		this.startGame();
+		this.secondsLeft = GameData.timePerQuestion;
 	}
 
 	showGameEnd() {
 		console.log("Answers Correct: ", this.correctQuestions.length);
+		// $("#question-card").hide();
+		$("#question-card").slideUp();
+
+	}
+
+
+
+	showGame() {
+		//initialize stuff. then show next question (first question)
+		this.addQuestionCard();
+		this.addScoreCard();
+		this.showNextQuestion();
+	}
+	startGame() {
+		var me = this;
+		// this.currentQuestion = -1;
+		this.showGame();
+		console.log(me.gameQuestions);
+		$("#restart-button").on("click", {
+			game: me
+		}, function(event) {
+			// debugger;
+			// let me = event.data.game;
+			me.resetGame();
+		})
+
+		return;
+
+	}
+
+
+	answerClicked(event) {
+		// console.log($(this));
+		let me = event.data.game;
+		clearInterval(me.referenceToQuestionTimer);
+		if (me.allowUserInput === false) {
+			// user has alread clicked before
+			return;
+		}
+		// to prevent user from clicking again after answer is clicked, don't listen to do anything on additional clicks
+		me.allowUserInput = false;
+
+		let answerIndex = $(this).val();
+		let questionItem = me.gameQuestions[me.currentQuestion];
+		// wait a bit before showing result to keep user in suspense
+		setTimeout(function() {
+			if (questionItem.answers[answerIndex] === questionItem.correctAnswer) {
+				// user answer was correct.
+				console.log("correct answer");
+				me.correctQuestions.push(me.currentQuestion);
+
+			}
+			else {
+				console.log("incorrect answer");
+				me.missedQuestions.push(me.currentQuestion);
+
+			}
+			setTimeout(function() {
+				me.showNextQuestion();
+			}, 0);
+		}, 300);
+
+		// console.log(this.val());
+		// console.log(t.val());
 	}
 
 	showNextQuestion() {
 		let me = this;
-		let question = me.gameQuestions[me.currentQuestion]
 		this.currentQuestion++;
-		if (this.currentQuestion >= this.gameQuestions.length) {
+		console.log("getting question with index", me.currentQuestion);
+		let question = me.gameQuestions[me.currentQuestion]
+		this.secondsLeft = GameData.timePerQuestion;
+		if (this.currentQuestion >= this.gameQuestions.length || this.currentQuestion >= maxQuestions) {
 			// game over. show gameEndScreen
 			this.showGameEnd();
 			return;
 		}
 		let questionCard = $("#question-card");
+
+
+		setTimeout(function() {
+			$("#question-card-header").text("Question " + (me.currentQuestion + 1))
+			$("#question-text").text(question.questionText)
+			let answerList = $("<ul>", {
+				id: "answer-list",
+				class: "awesome"
+			});
+			question.answers.forEach((answer, i) => {
+				var answerLI = $("<li>", {
+					class: "answer-option",
+					// text: answer,
+					value: i
+				}).append($("<div>", {
+					class: "btn btn-primary",
+					text: answer,
+					value: i
+				}));
+				answerList.append(answerLI);
+
+				// would like to move this to add listeners to the single class of answer options rather  than individual elements
+				answerLI.click({
+					game: me
+				}, me.answerClicked)
+
+
+			});
+			// answersCard.append();
+
+			$("#answers-card").empty().append(answerList);
+			// $("#answers-card").append(answerList);
+			$("#seconds-left").text(me.secondsLeft);
+			$("#number-correct").text(me.correctQuestions.length);
+			$("#number-missed").text(me.missedQuestions.length);
+			$("#number-incomplete").text(me.incompleteQuestions.length);
+			questionCard.show();
+
+			me.allowUserInput = true;
+			me.questionTimer();
+
+		}, 0);
+
+	}
+
+	addQuestionCard() {
+		let me = this;
+
+		let questionCard = $("#question-card");
+		// questionCard.fadeOut("slow", function() {
 		questionCard.empty();
 		let cardHeader = $("<div>", {
 			class: "card-header",
-			text: "Question " + (me.currentQuestion + 1)
+			text: "Question",
+			id: "question-card-header"
 		});
-		// let cardImage = $("<img>", {
-		// 	class: "card-img-top",
-		// 	src: character.image,
-		// 	alt: character.name
-		// });
 		var cardBody = $("<div>", {
 			class: "card-body"
 		}).append($("<p>", {
 			class: 'card-text',
-			html: question.question
+			html: "Questions are loading...",
+			id: "question-text"
 		}));
 		var answersCard = $("<div>", {
 			class: "card",
-			text: "Answers"
+			id: "answers-card",
+			text: "Answers are loading..."
 		});
-		answersCard.append($("<ul>", {
-			id: "answer-list",
-			class: "awesome"
-		}));
 		cardBody.append(answersCard);
-		console.log($("#answer-list"));
-		$("#answer-list").append($("<li>", {
-			text: question.answers[0]
-		}))
-		question.answers.forEach(answer => {
-			var answerLI = $("<li>", {
-				class: "answer-option",
-				text: answer
-			})
-			console.log("answerLI", answerLI);
-			// var li = $("<li>", {
-			// 	text: answer
-			// });
-			// var answerList = $("#answer-list");
-			// var answerList = $("#answer-list");
-			setTimeout(function() {
-				$("#answer-list").append(answerLI);
-			}, 0)
-			// console.log("#answer-list", answerList);
-			// $("#answer-list").append(answerLI);
-			// $("ul").append(answerLI);
-			console.log("adding answer", answer);
-			// $("#answer-list").append($("<li>", {
-			// class: "answer-option",
-			// text: answer
-			// }))
-		});
-		// $("answer-list")
-
-		// let maskDiv = ($("<div>", {
-		// 	class: 'mask'
-		// }))
-		// // let flexDiv = ($("<div>",  {class:'mask flex-center', html:"Select " + character.name}))
-		// // .append("<p>Select Character</p>"));
 
 		let cardFooter = $("<div>", {
 			class: 'card-footer'
 		}).append($("<small>", {
-			class: 'text-muted',
-			html: "Time: <span id='seconds-left'>10</span> seconds left"
+			// class: 'text-muted',
+			html: "Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left"
 		}));
 
-		questionCard.append(cardHeader, cardBody, cardFooter)
-		// characterCard.append(cardHeader).append(cardImage).append(flexDiv).append(cardFooter);
-
-
+		// questionCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
+		questionCard.append(cardHeader, cardBody, cardFooter);
+		// })
 
 	}
 
-	showGame() {
-		//initialize stuff. then show next question (first question)
-
-		this.showNextQuestion();
-	}
-	startGame() {
+	addScoreCard() {
 		let me = this;
-		this.currentQuestion = 0;
-		this.showGame();
-		console.log(me.gameQuestions);
 
-		return;
-
-		this.gameCharacters = this.possibleCharacters.map(characterData => {
-			let character = new Character(characterData);
-			return character;
+		let scoreCard = $("#score-card");
+		// questionCard.fadeOut("slow", function() {
+		scoreCard.empty();
+		let cardHeader = $("<div>", {
+			class: "card-header",
+			text: "Current Results",
+			id: "score-card-header"
 		});
-		this.humanPlayerSet = false
-		this.opponentSet = false
-		this.opponentsPlayed = 0
+		var cardBody = $("<div>", {
+			class: "card-body"
+		});
+		let elements = [{
+			id: "number-correct",
+			text: "Correct Answers"
+		}, {
+			id: "number-missed",
+			text: "Wrong Answers"
+		}, {
+			id: "number-incomplete",
+			text: "Incomplete Answers"
+		}]
 
-		$("#character-deck").empty();
-		this.gameCharacters.forEach((character, i) => {
-			// debugger;
-			// console.log(character);
-			// console.log("image: ", character.name, character.image, character._id)
-			let characterCard = $("<div>", {
-				class: 'card text-center character-card view overlay hm-blue-light',
-				value: i.toString(),
-				id: character._id
-				// style: "{width: 20rem}"
-			});
-			let cardHeader = $("<div>", {
-				class: "card-header",
-				text: character.name
-			});
-			let cardImage = $("<img>", {
-				class: "card-img-top",
-				src: character.image,
-				alt: character.name
-			});
-			let cardBody = $("<div>", {
-				class: "card-body"
-			});
-			// cardBody.append($("<p>", {
-			// 	class: 'card-text',
-			// 	text: character.name
-			// }));
-			let maskDiv = ($("<div>", {
-				class: 'mask'
+		elements.forEach(function(element) {
+			cardBody.append($("<p>", {
+				class: "card-text",
+				html: element.text + ": <span id=\"" + element.id + "\"</span>"
 			}))
-			// let flexDiv = ($("<div>",  {class:'mask flex-center', html:"Select " + character.name}))
-			// .append("<p>Select Character</p>"));
+		})
+		// scoreCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
+		scoreCard.append(cardHeader, cardBody);
+		// })
+	}
 
-			let cardFooter = $("<div>", {
-				class: 'card-footer'
-			}).append($("<small>", {
-				class: 'text-muted',
-				text: "Health: " + character.healthPoints
-			}));
-
-			characterCard.append(cardHeader).append(cardImage).append(cardBody).append(maskDiv).append(cardFooter);
-			// characterCard.append(cardHeader).append(cardImage).append(flexDiv).append(cardFooter);
-			console.log("card: ", characterCard);
-			$("#character-deck").append(characterCard);
-
-			// // get current height off character cards and set height to that to try to force them to stay same height
-			// setTimeout(function() {
-			// let cardHeight = $("#" + me.gameCharacters[0]._id).height();
-			let cardWidth = $("#" + me.gameCharacters[0]._id).width();
-			// 	console.log("cardHeight", cardHeight);
-
-			// $(".character-card").height(cardHeight).width(cardWidth);
-
-
-			// $(".character-card").css("maxWidth", cardWidth);
-
-			// }, 1000);
-
-
-		});
-
-		// clear the battle characters
-		$("#battle-deck").empty();
-		this.addCharacterClickListeners();
-		setTimeout(function() {
-			me.characterDeckHeight = $("#character-deck").outerHeight();
-			console.log("set characterDeckHeight", me.characterDeckHeight);
-			$("#character-deck").css("minHeight", me.characterDeckHeight);
-			$("#battle-deck").css("minHeight", me.characterDeckHeight);
-
-
-		}, 100);
-
-
-		// now that character-deck is full, set its  min-height to the current height to keep it from collapsing.
-
-
-		// disable Attack button (will be enabled after player selects charactetr and opponent)
-		$("#attack-button").prop('disabled', true);
-		$("#attack-button").attr('aria-disabled', true);
+	questionTimer() {
+		let me = this;
+		me.referenceToQuestionTimer = setInterval(function() {
+			if (me.secondsLeft <= 0) {
+				clearInterval(me.referenceToQuestionTimer);
+				me.incompleteQuestions.push(me.currentQuestion);
+				me.showNextQuestion();
+			}
+			else {
+				console.log("updating seconds left")
+				$("#seconds-left").text(me.secondsLeft)
+				me.secondsLeft--;
+			}
+		}, 1000);
 
 	}
 

@@ -26,6 +26,9 @@ body {
 }
 */
 
+#question-card {
+	margin-bottom: 40px;
+}
 
 .container.wrapper {
 	/* this top padding is used to offset the navbar's absolute positioning.  For smaller viewport, media query is used to remove top-padding and change navbar positioning to static */
@@ -33,8 +36,21 @@ body {
 	padding-bottom: 40px;
 	margin-bottom: 40px;
 }
+/*
+.answer-option:hover {
+	background: green;
+	color: white;
+}*/
 
+.answer-option {
+	margin-top: .4em;
+	/*width: 100%;*/
+	/*margin-botto*/
+}
 
+.answer-option .btn {
+	width: 75%;
+}
 
 h1,
 h2,
