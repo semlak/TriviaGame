@@ -250,14 +250,40 @@ let GameData = {
 	timePerQuestion: timePerQuestion
 }
 
-// function createPermutation(min, max) {
+function createPermutation(min, max) {
+	function permute(front, arr) {
+		if (arr.length < 2) {
+			return front.concat(arr);
+		}
+		else {
+			// get one of the elements from array. It will be at the front for the permuted array.
+			let mid = arr[Math.floor(Math.random() * arr.length)];
+			return permute(front.concat([mid]), arr.filter(element => element != mid));
+			// the remaining elements will have the permute function applied to them, recursively.
+		}
+	}
+	let arr = Array.from(Array(max - min).keys()).map(element => element + min);
+	console.log(arr);
+	return permute([], arr);
 
-// }
+}
+
+
+// console.log(createPermutation(0, 10));
+
+
+
 
 
 let TriviaGame = class {
 	constructor() {
-		this.gameQuestions = GameData.questions;
+		this.gameQuestions = createPermutation(0, GameData.questions.length).map(i => {
+			return {
+				questionItem: GameData.questions[i],
+				questionIndex: i
+			};
+		});
+		console.log(this.gameQuestions);
 		this.resetGame();
 	}
 
@@ -273,14 +299,20 @@ let TriviaGame = class {
 		this.gameInProgress = false;
 		this.currentQuestion = -1
 		this.allowUserInput = false;
-		this.startGame();
 		this.secondsLeft = GameData.timePerQuestion;
+		this.startGame();
+
 	}
 
 	showGameEnd() {
+		let me = this;
 		console.log("Answers Correct: ", this.correctQuestions.length);
 		// $("#question-card").hide();
-		$("#question-card").slideUp();
+		$("#question-card").slideUp("slow");
+		$("#score-card").slideUp("slow", function() {
+			me.addGameResultsCard();
+
+		})
 
 	}
 
@@ -325,10 +357,22 @@ let TriviaGame = class {
 		let questionItem = me.gameQuestions[me.currentQuestion];
 		// wait a bit before showing result to keep user in suspense
 		setTimeout(function() {
-			if (questionItem.answers[answerIndex] === questionItem.correctAnswer) {
+			console.log("questionItem", questionItem);
+			if (questionItem.questionItem.answers[answerIndex] === questionItem.questionItem.correctAnswer) {
 				// user answer was correct.
 				console.log("correct answer");
 				me.correctQuestions.push(me.currentQuestion);
+
+
+				$(".answer-option .btn").each((i, item) => {
+					console.log("item", item)
+
+					if (item.innerText === questionItem.questionItem.correctAnswer) {
+						console.log("updatingg class for button");
+						$(item).removeClass("btn-danger").addClass("btn-primary");
+					}
+					// debugger;
+				})
 
 			}
 			else {
@@ -338,7 +382,7 @@ let TriviaGame = class {
 			}
 			setTimeout(function() {
 				me.showNextQuestion();
-			}, 0);
+			}, 3000);
 		}, 300);
 
 		// console.log(this.val());
@@ -349,7 +393,7 @@ let TriviaGame = class {
 		let me = this;
 		this.currentQuestion++;
 		console.log("getting question with index", me.currentQuestion);
-		let question = me.gameQuestions[me.currentQuestion]
+		let question = me.gameQuestions[me.currentQuestion].questionItem;
 		this.secondsLeft = GameData.timePerQuestion;
 		if (this.currentQuestion >= this.gameQuestions.length || this.currentQuestion >= maxQuestions) {
 			// game over. show gameEndScreen
@@ -366,15 +410,23 @@ let TriviaGame = class {
 				id: "answer-list",
 				class: "awesome"
 			});
-			question.answers.forEach((answer, i) => {
+			//ranomize answer order
+			let permutedAnswers = createPermutation(0, question.answers.length).map(i => {
+				return {
+					answerIndex: i,
+					answerText: question.answers[i]
+				};
+			});
+			// question.answers.forEach((answer, i) => {
+			permutedAnswers.forEach(answerObj => {
 				var answerLI = $("<li>", {
 					class: "answer-option",
 					// text: answer,
-					value: i
+					value: answerObj.answerIndex
 				}).append($("<div>", {
-					class: "btn btn-primary",
-					text: answer,
-					value: i
+					class: "btn btn-danger",
+					text: answerObj.answerText,
+					value: answerObj.answerIndex
 				}));
 				answerList.append(answerLI);
 
@@ -402,11 +454,56 @@ let TriviaGame = class {
 
 	}
 
+	createQuestionCard(id, questionIndex) {
+		let me = this;
+
+		let questionCard = $("<div>", {
+			class: "card",
+			id: id
+		});
+		// questionCard.fadeOut("slow", function() {
+		// questionCard.empty().hide();
+		questionCard.empty();
+		let cardHeader = $("<div>", {
+			class: "card-header",
+			text: "Question",
+			id: "question-card-header"
+		});
+		var cardBody = $("<div>", {
+			class: "card-body"
+		}).append($("<p>", {
+			class: 'card-text',
+			html: "Questions are loading...",
+			id: "question-text"
+		}));
+		var answersCard = $("<div>", {
+			class: "card",
+			id: "answers-card",
+			text: "Answers are loading..."
+		});
+		cardBody.append(answersCard);
+
+		let cardFooter = $("<div>", {
+			class: 'card-footer'
+		}).append($("<small>", {
+			// class: 'text-muted',
+			html: me.gameInProgress ? "Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left" : ""
+		}));
+
+		// questionCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
+		return questionCard.append(cardHeader, cardBody, cardFooter).slideDown("slow");
+	}
+
+	addQuestionCardNew(id, questionIndex) {
+		return
+	}
+
 	addQuestionCard() {
 		let me = this;
 
 		let questionCard = $("#question-card");
 		// questionCard.fadeOut("slow", function() {
+		// questionCard.empty().hide();
 		questionCard.empty();
 		let cardHeader = $("<div>", {
 			class: "card-header",
@@ -435,8 +532,30 @@ let TriviaGame = class {
 		}));
 
 		// questionCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
-		questionCard.append(cardHeader, cardBody, cardFooter);
+		questionCard.append(cardHeader, cardBody, cardFooter).slideDown("slow");
 		// })
+
+	}
+
+	addGameResultsCard() {
+		let me = this;
+		let i = 0,
+			j = 0,
+			k = 0;
+		let resultsCard = $("<div>", {
+			class: "card",
+			id: "game-results-card"
+		}).append($("<div>", {
+			class: "card-header",
+			html: "<h3>Your Results</h3>"
+		}), $("<div>", {
+			class: "card-body",
+			text: me.correctQuestions.toString()
+
+		}).append(me.gameQuestions.forEach(question => {
+			let card = $("<div>", {})
+		})));
+		$("#game-container").append(resultsCard);
 
 	}
 
