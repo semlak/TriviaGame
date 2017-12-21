@@ -1,275 +1,49 @@
 // delete this
 var game;
-const timePerQuestion = 10;
-const maxQuestions = 5;
 
-let GameData = {
-	questions: [{
-		// note: questions are taken from quiz at http://www.playbuzz.com/katelynw11/how-well-do-you-know-harry-potter
-		questionText: "Who's birthday party did Harry, Ron, and Hermione go to in The Chamber of Secrets?",
-		answers: [
-			"Nearly Headless Nick",
-			"Draco Malfoy",
-			"Albus Dumbledore",
-			"Dobby"
-		],
-		correctAnswer: "Nearly Headless Nick"
 
-	}, {
-		questionText: "What patronus does Luna Lovegood have?",
-		answers: [
-			"Lion",
-			"Horse",
-			"Stag",
-			"Rabbit"
-		],
-		correctAnswer: "Rabbit"
-	}, {
-		questionText: "Who was the quidditch commentator in Harry's first years at Hogwarts?",
-		answers: [
-			"Dean Thomas",
-			"Terry Boot",
-			"Angelina Johnson",
-			"Lee Jordan"
-		],
-		correctAnswer:
-
-			"Lee Jordan"
-	}, {
-		questionText: "Who disguised himself as Mad Eye Moody in The Goblet of Fire?",
-		answers: [
-			"Barty Crouch Jr.",
-			"Vincent Crabbe",
-			"Severus Snape",
-			"Ernie McMillian"
-		],
-		correctAnswer: "Barty Crouch Jr."
-
-	}, {
-		questionText: "What organization did Hermione start in her 4th year?",
-		answers: [
-			"Wizards Against the Dark Arts",
-			"Dumbledore's Army",
-			"Witches for Equal Rights",
-			"Society for the Promotion of Elfish Welfare"
-		],
-		correctAnswer: "Society for the Promotion of Elfish Welfare"
-	}, {
-		questionText: "Which wand belongs to Harry?",
-		answers: [
-			"Holly",
-			"Blackthorn",
-			"Walnut",
-			"Elder"
-		],
-		correctAnswer: "Holly"
-
-	}, {
-		questionText: "What potion did Harry take in order to get Slughorn's memories?",
-		answers: [
-			"Alihotsy Draught",
-			"Felix Felicis",
-			"Essence of Dittany",
-			"Polyjuice Potion"
-		],
-		correctAnswer: "Felix Felicis"
-
-	}, {
-		questionText: "Who did Hermione take to Slughorn's Christmas party?",
-		answers: [
-			"Cormac McLaggen",
-			"Ron Weasley",
-			"Dean Thomas",
-			"Neville Longbottom"
-		],
-		correctAnswer: "Cormac McLaggen"
-
-	}, {
-		questionText: "Who was the first to be stunned by the Basilisk?",
-		answers: [
-			"Hermione Granger",
-			"Colin Creevey",
-			"Mrs. Norris",
-			"Ginny Weasley"
-		],
-		correctAnswer:
-
-			"Mrs. Norris"
-	}, {
-		questionText: "Who ended up giving Harry permission to go to Hogsmeade?",
-		answers: [
-			"Albus Dumbledore",
-			"Vernon Dursley",
-			"Minerva McGonagall",
-			"Sirius Black"
-		],
-		correctAnswer:
-
-			"Sirius Black"
-	}, {
-		questionText: "What did Dumbledore leave for Hermione in his will?",
-		answers: ["An enchanted purse",
-			"The Tales of Beedle the Bard",
-			"A bezoar",
-			"A lighter"
-		],
-		correctAnswer: "The Tales of Beedle the Bard"
-
-	}, {
-		questionText: "Who found Harry, Ron, and Hermione in the woods in The Deathly Hallows?",
-		answers: [
-			"Snatchers",
-			"Fenrir Greyback",
-			"Voldemort",
-			"Lucius Malfoy"
-		],
-		correctAnswer: "Fenrir Greyback"
-
-	}, {
-		questionText: "How did Harry survive underwater in the Triwizard Tournament?",
-		answers: [
-			"Bubble-head charm",
-			"Gillyweed",
-			"Transfiguration",
-			"Gills charm"
-		],
-		correctAnswer: "Gillyweed"
-	}, {
-		questionText: "Who did Ron turn into when Harry, Ron, and Hermione snuck into the Ministry of Magic in The Deathly Hallows?",
-		answers: [
-			"Dirk Cresswell",
-			"Albert Runcorn",
-			"Reginald Cattermole",
-			"Mundungus Fletcher"
-		],
-		correctAnswer:
-
-			"Reginald Cattermole"
-	}, {
-		questionText: "What spell is used to save Hermione from the troll in The Sorcerer's Stone?",
-		answers: [
-			"Confundus",
-			"Stupify",
-			"Wingardium Leviosa",
-			"Petrificus Totalus"
-		],
-		correctAnswer: "Wingardium Leviosa"
-	}, {
-		questionText: "What magazine does Luna's father publish?",
-		answers: [
-			"The Practical Potioneer",
-			"The Daily Prophet",
-			"The Quibbler",
-			"Challenges in Charming"
-		],
-		correctAnswer: "The Quibbler"
-	}, {
-		questionText: "What was Harry's first broomstick?",
-		answers: [
-			"Thunderbolt",
-			"Nimbus 2000",
-			"Firebolt",
-			"Cleansweep Two"
-		],
-		correctAnswer: "Nimbus 2000"
-	}, {
-		questionText: "How did Harry spend his first detention?",
-		answers: [
-			"Going into the Forbidden Forest",
-			"Writing an essay",
-			"Signing autographs",
-			"Cleaning trophies"
-		],
-		correctAnswer: "Going into the Forbidden Forest"
-	}, {
-		questionText: "What happened to Neville's parents so that they couldn't remember their son?",
-		answers: [
-			"They lost their memories in an apperation accident",
-			"The Confundus Charm was used on them",
-			"They didn't lose their memories",
-			"The Cruciatus Curse was used on them"
-		],
-		correctAnswer: "The Cruciatus Curse was used on them"
-	}, {
-		questionText: "Who is Harry's godson?",
-		answers: [
-			"Hugo Weasley",
-			"Lorcan Scamander",
-			"Teddy Lupin",
-			"Victoire Weasley"
-		],
-		correctAnswer: "Teddy Lupin"
-	}, {
-		questionText: "What school did the Dursley's say they sent Harry to?",
-		answers: [
-			"Walworth Academy",
-			"St. Grogory's Primary School",
-			"Smeltings Academy",
-			"St. Brutus' Secure Centre for Incurably Criminal Boys"
-		],
-		correctAnswer:
-
-			"St. Brutus' Secure Centre for Incurably Criminal Boys"
-	}, {
-		questionText: "What crime was Hagrid committed of in his time at Hogwarts?",
-		answers: [
-			"Casting a spell on a professor",
-			"Going into the Forbidden Forest",
-			"Opening the Chamber of Secrets",
-			"Killing a girl"
-		],
-		correctAnswer: "Opening the Chamber of Secrets"
-	}, {
-		questionText: "What does R.A.B. stand for?",
-		answers: [
-			"Rats and Bats",
-			"Regulus Arcturus Black",
-			"Rebellion Against Buckbeak",
-			"Regulation of Action Bubotuber"
-		],
-		correctAnswer: "Regulus Arcturus Black"
-	}, {
-		questionText: "What was the name of the female elf Dobby liked?",
-		answers: [
-			"Winky",
-			"Minka",
-			"Orist",
-			"Oona"
-		],
-		correctAnswer: "Winky"
-	}, {
-		questionText: "What is Harry's youngest son's name?",
-		answers: [
-			"Sirius",
-			"Albus",
-			"Remus",
-			"James"
-		],
-		correctAnswer: "Albus"
-	}],
-	timePerQuestion: timePerQuestion
+const QuestionOutcomeEnum = {
+	CORRECT: "Correct",
+	INCORRECT: "Incorrect",
+	INCOMPLETE: "Incomplete"
 }
 
-function createPermutation(min, max) {
-	function permute(front, arr) {
-		if (arr.length < 2) {
-			return front.concat(arr);
-		}
-		else {
-			// get one of the elements from array. It will be at the front for the permuted array.
-			let mid = arr[Math.floor(Math.random() * arr.length)];
-			return permute(front.concat([mid]), arr.filter(element => element != mid));
-			// the remaining elements will have the permute function applied to them, recursively.
-		}
+
+const maxQuestions = 2;
+
+function randomUpToN(n) {
+	// does not return n, but numbers between 0 and n-1
+	return (Math.floor(Math.random() * n));
+}
+
+function swapArrayElements(arr, i, j) {
+	// swaps  the elements i and j or arr. Does  not return anything. It alters input array.
+	if (i !== j) {
+		let t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
 	}
-	let arr = Array.from(Array(max - min).keys()).map(element => element + min);
-	console.log(arr);
-	return permute([], arr);
-
 }
 
+function shuffleArray(arr) {
+	// returns a shuffled version of the array. Does not alter the input array
+	// Tries to implement the Knuth Shuffle.
 
-// console.log(createPermutation(0, 10));
+	// clone the array
+	var outputArr = arr.slice(0);
+	let n = arr.length;
+	for (let i = 0; i < n - 1; i++) {
+		let j = randomUpToN(n - i);
+		// swap element i with the element at (i+j). max i+j value is i + (n-i) - 1 = n - 1
+
+		swapArrayElements(outputArr, i, i + j)
+		// console.log(outputArr)
+	}
+	return outputArr;
+}
+
+let arr = Array.from(Array(20 - 0).keys()).map(element => element + 0);
+// console.log(shuffleArray(arr));
 
 
 
@@ -277,12 +51,7 @@ function createPermutation(min, max) {
 
 let TriviaGame = class {
 	constructor() {
-		this.gameQuestions = createPermutation(0, GameData.questions.length).map(i => {
-			return {
-				questionItem: GameData.questions[i],
-				questionIndex: i
-			};
-		});
+		this.gameQuestions = shuffleArray(GameData.questions);
 		console.log(this.gameQuestions);
 		this.resetGame();
 	}
@@ -293,12 +62,16 @@ let TriviaGame = class {
 		// for this app, I think I can create a new game class. Maybe?
 		clearInterval(this.referenceToQuestionTimer);
 		this.score = 0;
-		this.missedQuestions = [];
-		this.correctQuestions = [];
-		this.incompleteQuestions = [];
+		this.missedQuestions = 0;
+		this.correctQuestions = 0;
+		this.incompleteQuestions = 0;
+
+
 		this.gameInProgress = false;
 		this.currentQuestion = -1
 		this.allowUserInput = false;
+		// because the answers for each question will be random, I want to save the questions asked. Saving in this.askedQuestions
+		this.askedQuestions = [];
 		this.secondsLeft = GameData.timePerQuestion;
 		this.startGame();
 
@@ -306,10 +79,10 @@ let TriviaGame = class {
 
 	showGameEnd() {
 		let me = this;
-		console.log("Answers Correct: ", this.correctQuestions.length);
+		console.log("Answers Correct: ", this.correctQuestions);
 		// $("#question-card").hide();
-		$("#question-card").slideUp("slow");
-		$("#score-card").slideUp("slow", function() {
+		$(".question-card").slideUp("slow");
+		$("#score-card").slideUp("fast", function() {
 			me.addGameResultsCard();
 
 		})
@@ -320,12 +93,20 @@ let TriviaGame = class {
 
 	showGame() {
 		//initialize stuff. then show next question (first question)
-		this.addQuestionCard();
-		this.addScoreCard();
-		this.showNextQuestion();
+		// this.addQuestionCard();
+		// this.updateScoreCard();
+		let me = this;
+		$("#game-container").slideUp("slow", () => {
+			$("#question-card-container, #game-results-container, #score-card-container").empty();
+			$("#score-card-container").append(me.createEmptyScoreCard())
+			me.showNextQuestion2();
+			$("#game-container").slideDown("slow");
+		});
 	}
+
 	startGame() {
 		var me = this;
+		me.gameInProgress = true;
 		// this.currentQuestion = -1;
 		this.showGame();
 		console.log(me.gameQuestions);
@@ -350,38 +131,47 @@ let TriviaGame = class {
 			// user has alread clicked before
 			return;
 		}
+		$(".card-footer").text("Checking your answer...");
 		// to prevent user from clicking again after answer is clicked, don't listen to do anything on additional clicks
 		me.allowUserInput = false;
 
-		let answerIndex = $(this).val();
-		let questionItem = me.gameQuestions[me.currentQuestion];
+		// let answerIndex = $(this).val();
+		let selectedAnswer = $(this).text();
+		// debugger;
+
+		let questionItem = me.askedQuestions[me.currentQuestion];
+		questionItem.playerAnswer = selectedAnswer;
 		// wait a bit before showing result to keep user in suspense
 		setTimeout(function() {
 			console.log("questionItem", questionItem);
-			if (questionItem.questionItem.answers[answerIndex] === questionItem.questionItem.correctAnswer) {
+			// console.log("questionItem.answers[answerIndex]", questionItem.answers[answerIndex], "questionItem.correctAnswer", questionItem.correctAnswer);
+			if (questionItem.playerAnswer === questionItem.correctAnswer) {
 				// user answer was correct.
 				console.log("correct answer");
-				me.correctQuestions.push(me.currentQuestion);
-
-
-				$(".answer-option .btn").each((i, item) => {
-					console.log("item", item)
-
-					if (item.innerText === questionItem.questionItem.correctAnswer) {
-						console.log("updatingg class for button");
-						$(item).removeClass("btn-danger").addClass("btn-primary");
-					}
-					// debugger;
-				})
-
+				me.correctQuestions++;
+				me.askedQuestions[me.currentQuestion].questionOutcome = QuestionOutcomeEnum.CORRECT;
+				console.log(me.askedQuestions);
 			}
 			else {
 				console.log("incorrect answer");
-				me.missedQuestions.push(me.currentQuestion);
-
+				me.missedQuestions++;
+				me.askedQuestions[me.currentQuestion].questionOutcome = QuestionOutcomeEnum.INCORRECT;
 			}
+
+			$(".answer-option .btn").each((i, item) => {
+				// if (item.)
+				if (item.innerText === questionItem.correctAnswer) {
+					$(item).removeClass("btn-danger").addClass("btn-primary");
+				}
+				else if (item.innerText === questionItem.playerAnswer) {
+					// since the selected answer was not the correct answer (per the if branch), this was the incorrect answer
+					$(item).removeClass("btn-danger").addClass("btn-warning");
+				}
+
+				console.log(item);
+			});
 			setTimeout(function() {
-				me.showNextQuestion();
+				me.showNextQuestion2();
 			}, 3000);
 		}, 300);
 
@@ -389,153 +179,102 @@ let TriviaGame = class {
 		// console.log(t.val());
 	}
 
-	showNextQuestion() {
+	showNextQuestion2() {
 		let me = this;
 		this.currentQuestion++;
 		console.log("getting question with index", me.currentQuestion);
-		let question = me.gameQuestions[me.currentQuestion].questionItem;
+		let question = me.gameQuestions[me.currentQuestion];
 		this.secondsLeft = GameData.timePerQuestion;
 		if (this.currentQuestion >= this.gameQuestions.length || this.currentQuestion >= maxQuestions) {
 			// game over. show gameEndScreen
+			me.gameInProgress = false;
 			this.showGameEnd();
 			return;
 		}
-		let questionCard = $("#question-card");
 
+		let questionToAsk = {
+			questionText: question.questionText,
+			answers: shuffleArray(question.answers),
+			correctAnswer: question.correctAnswer,
+			questionNumber: me.currentQuestion + 1,
 
-		setTimeout(function() {
-			$("#question-card-header").text("Question " + (me.currentQuestion + 1))
-			$("#question-text").text(question.questionText)
-			let answerList = $("<ul>", {
-				id: "answer-list",
-				class: "awesome"
-			});
-			//ranomize answer order
-			let permutedAnswers = createPermutation(0, question.answers.length).map(i => {
-				return {
-					answerIndex: i,
-					answerText: question.answers[i]
-				};
-			});
-			// question.answers.forEach((answer, i) => {
-			permutedAnswers.forEach(answerObj => {
-				var answerLI = $("<li>", {
-					class: "answer-option",
-					// text: answer,
-					value: answerObj.answerIndex
-				}).append($("<div>", {
-					class: "btn btn-danger",
-					text: answerObj.answerText,
-					value: answerObj.answerIndex
-				}));
-				answerList.append(answerLI);
+			// playerAnswer and outcome will be updated if question is completed
+			playerAnswer: "",
+			questionOutcome: QuestionOutcomeEnum.INCOMPLETE
+		};
 
-				// would like to move this to add listeners to the single class of answer options rather  than individual elements
-				answerLI.click({
-					game: me
-				}, me.answerClicked)
+		let questionCard = me.createQuestionCard1(questionToAsk);
 
+		me.askedQuestions.push(questionToAsk);
+		// answersCard.append();
 
-			});
-			// answersCard.append();
+		// $("#answers-card").empty().append(answerList);
+		// $("#answers-card").append(answerList);
+		// $("#seconds-left").text(me.secondsLeft);
+		// $("#number-correct").text(me.correctQuestions.length);
+		// $("#number-missed").text(me.missedQuestions.length);
+		// $("#number-incomplete").text(me.incompleteQuestions.length);
+		console.log("adding question card", questionCard);
+		$("#question-card-container").empty().append(questionCard);
+		me.updateScoreCard()
+		// questionCard.show();
 
-			$("#answers-card").empty().append(answerList);
-			// $("#answers-card").append(answerList);
-			$("#seconds-left").text(me.secondsLeft);
-			$("#number-correct").text(me.correctQuestions.length);
-			$("#number-missed").text(me.missedQuestions.length);
-			$("#number-incomplete").text(me.incompleteQuestions.length);
-			questionCard.show();
-
-			me.allowUserInput = true;
-			me.questionTimer();
-
-		}, 0);
-
+		me.allowUserInput = true;
+		me.questionTimer();
 	}
 
-	createQuestionCard(id, questionIndex) {
+	updateScoreCard() {
 		let me = this;
+		$("#number-correct").text(me.correctQuestions);
+		$("#number-missed").text(me.missedQuestions);
+		$("#number-incomplete").text(me.incompleteQuestions);
 
-		let questionCard = $("<div>", {
-			class: "card",
-			id: id
-		});
-		// questionCard.fadeOut("slow", function() {
-		// questionCard.empty().hide();
-		questionCard.empty();
-		let cardHeader = $("<div>", {
-			class: "card-header",
-			text: "Question",
-			id: "question-card-header"
-		});
-		var cardBody = $("<div>", {
-			class: "card-body"
-		}).append($("<p>", {
-			class: 'card-text',
-			html: "Questions are loading...",
-			id: "question-text"
-		}));
-		var answersCard = $("<div>", {
-			class: "card",
-			id: "answers-card",
-			text: "Answers are loading..."
-		});
-		cardBody.append(answersCard);
 
-		let cardFooter = $("<div>", {
-			class: 'card-footer'
-		}).append($("<small>", {
-			// class: 'text-muted',
-			html: me.gameInProgress ? "Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left" : ""
-		}));
-
-		// questionCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
-		return questionCard.append(cardHeader, cardBody, cardFooter).slideDown("slow");
 	}
 
-	addQuestionCardNew(id, questionIndex) {
-		return
-	}
 
-	addQuestionCard() {
+
+	createQuestionCard1(question) {
+		// let question = me.gameQuestions[me.currentQuestion];
 		let me = this;
+		console.log(question);
+		let questionCard = $("<div>").addClass("question-card card");
+		questionCard.append($("<div>").addClass("card-header").html("<h5>Question " + question.questionNumber + " of " + me.gameQuestions.length))
+		let questionCardBody = $("<div>").addClass("card-body").append($("<p>").addClass('card-text').text(question.questionText));
 
-		let questionCard = $("#question-card");
-		// questionCard.fadeOut("slow", function() {
-		// questionCard.empty().hide();
-		questionCard.empty();
-		let cardHeader = $("<div>", {
-			class: "card-header",
-			text: "Question",
-			id: "question-card-header"
+		let answerList = $("<ul>").addClass("answer-list");
+		question.answers.forEach((answer, i) => {
+			let button = $("<div>").addClass("btn").text(answer);
+			var answerLI = $("<li>", {
+				class: "answer-option",
+			}).append();
+			if (me.gameInProgress) {
+				button.addClass("btn-danger")
+			}
+			else if (answer === question.correctAnswer) {
+				button.addClass("btn-primary");
+			}
+			else if (answer === question.playerAnswer) {
+				button.addClass("btn-warning");
+			}
+			else {
+				button.addClass("btn-danger")
+			}
+			answerList.append(answerLI.append(button));
+
 		});
-		var cardBody = $("<div>", {
-			class: "card-body"
-		}).append($("<p>", {
-			class: 'card-text',
-			html: "Questions are loading...",
-			id: "question-text"
-		}));
-		var answersCard = $("<div>", {
-			class: "card",
-			id: "answers-card",
-			text: "Answers are loading..."
-		});
-		cardBody.append(answersCard);
+		questionCardBody.append(answerList);
 
-		let cardFooter = $("<div>", {
-			class: 'card-footer'
-		}).append($("<small>", {
-			// class: 'text-muted',
-			html: "Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left"
-		}));
-
-		// questionCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
-		questionCard.append(cardHeader, cardBody, cardFooter).slideDown("slow");
-		// })
-
+		let cardFooter = $("<div>").addClass('card-footer').html(
+			me.gameInProgress ?
+			"Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left" :
+			"Your Response was: " + question.questionOutcome
+		);
+		questionCard.append(questionCardBody);
+		questionCard.append(cardFooter);
+		return questionCard;
 	}
+
 
 	addGameResultsCard() {
 		let me = this;
@@ -545,21 +284,71 @@ let TriviaGame = class {
 		let resultsCard = $("<div>", {
 			class: "card",
 			id: "game-results-card"
-		}).append($("<div>", {
-			class: "card-header",
-			html: "<h3>Your Results</h3>"
-		}), $("<div>", {
-			class: "card-body",
-			text: me.correctQuestions.toString()
+		}).append($("<div>")).addClass("card-header").html("<h3>Your Results</h3>")
+		// let cardBody = $("<div>").addClass("card-body").text(me.correctQuestions)
+		let cardBody = $("<div>").addClass("card-body").html(
+			"<p>Correct: " + me.correctQuestions + "</p>" +
+			"<p>Incorrect: " + me.missedQuestions + "</p>" +
+			"<p>Incomplete: " + me.incompleteQuestions + "</p>" +
+			"<hr><h5>Individual Question Responses</h5>"
+		);
 
-		}).append(me.gameQuestions.forEach(question => {
-			let card = $("<div>", {})
-		})));
-		$("#game-container").append(resultsCard);
+		let questionResults = $("<div>").addClass("jumbotron");
+
+		me.askedQuestions.forEach(askedQuestion => {
+			questionResults.append(me.createQuestionCard1(askedQuestion));
+		})
+		cardBody.append(questionResults);
+		// cardBody.slideUp("fast", function() {
+		$("#game-container").slideUp("slow", () => {
+			$("#game-results-container").append(resultsCard.append(cardBody));
+			$("#game-container").slideDown("slow");
+		})
+
+
 
 	}
 
-	addScoreCard() {
+	createEmptyScoreCard() {
+		let me = this;
+
+		// let scoreCard = $("#score-card");
+		let scoreCard = $("<div>").addClass("card").attr("id", "score-card");
+		// questionCard.fadeOut("slow", function() {
+		// scoreCard.empty();
+		let cardHeader = $("<div>", {
+			class: "card-header",
+			text: "Current Results",
+			id: "score-card-header"
+		});
+		var cardBody = $("<div>", {
+			class: "card-body"
+		});
+		let elements = [{
+			id: "number-correct",
+			text: "Correct Answers"
+		}, {
+			id: "number-missed",
+			text: "Wrong Answers"
+		}, {
+			id: "number-incomplete",
+			text: "Incomplete Answers"
+		}]
+
+		elements.forEach(function(element) {
+			cardBody.append($("<p>", {
+				class: "card-text",
+				html: element.text + ": <span id=\"" + element.id + "\">0</span>"
+			}))
+		})
+		// scoreCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
+		scoreCard.append(cardHeader, cardBody);
+		return scoreCard;
+		// })
+	}
+
+
+	updateScoreCardOld() {
 		let me = this;
 
 		let scoreCard = $("#score-card");
@@ -600,8 +389,8 @@ let TriviaGame = class {
 		me.referenceToQuestionTimer = setInterval(function() {
 			if (me.secondsLeft <= 0) {
 				clearInterval(me.referenceToQuestionTimer);
-				me.incompleteQuestions.push(me.currentQuestion);
-				me.showNextQuestion();
+				me.incompleteQuestions++;
+				me.showNextQuestion2();
 			}
 			else {
 				console.log("updating seconds left")
@@ -617,5 +406,10 @@ let TriviaGame = class {
 
 $(document).ready(function() {
 	game = new TriviaGame();
+
+	$(document).on("click", ".answer-option", {
+		game: game
+	}, game.answerClicked);
+
 
 })
