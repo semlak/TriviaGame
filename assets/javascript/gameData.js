@@ -1,4 +1,4 @@
-const timePerQuestion = 10;
+const timePerQuestion = 15;
 
 let GameData = {
 	questions: [{

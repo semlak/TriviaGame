@@ -5,6 +5,10 @@ body {
 	font-size: 18px;
 	line-height: 34px;
 	color: #777;
+	/*background-image: "./assets/images/order-of-phoenix.jpg";*/
+	background-image: url("../images/order-of-phoenix.jpg");
+	background-attachment: fixed;
+
 }
 
 
@@ -18,27 +22,76 @@ body {
 }
 
 
+/* prevent onhover behavior of buttons*/
+.btn-outline-primary.nohover:hover, .btn-outline-primary.nohover:active, .btn-outline-primary.nohover:focus .btn-outline-primary.disabled {
 
+    /* here copy default .btn class styles */
+  color: #4582EC;
+  background-color: transparent;
+  background-image: none;
+  border-color: #4582EC;
+  cursor:default !important;
+    /* or something like that */
+}
 
+.btn.disabled, .btn:disabled {
+  opacity: .95;
+}
+
+.user-clicked .btn-primary {
+ color: #fff!important;
+  background-color: #4582EC!important;
+  border-color: #4582EC!important;
+
+  /*color: #4582EC;*/
+  /*background-color: transparent;*/
+  /*background-image: none;*/
+  /*border-color: #4582EC;*/
+
+           box-shadow: 0 0 0 0.2rem rgba(69, 130, 236, 0.5);
+}
 
 /*.card-header {
 	background: #fff;
 }
 */
 
-.question-card {
+.progress {
+	height: 2em;
+
+}
+
+#timer {
+	width: 100%;
+}
+
+.question-card, .score-card, .game-results-card {
 	margin-bottom: 40px;
 }
 
+#game-results-container .question-card {
+	margin-right: 10%;
+}
+
+#question-card-container .question-card .card-header{
+	/*margin-left: auto;*/
+	color: #ccc !important;
+	background-color: #4582EC !important
+
+}
+
+
+
+
 .container.wrapper {
 	/* this top padding is used to offset the navbar's absolute positioning.  For smaller viewport, media query is used to remove top-padding and change navbar positioning to static */
-	padding-top: 86px;
+	padding-top: 120px;
 	padding-bottom: 40px;
 	margin-bottom: 40px;
 }
 
 .btn {
-	border-radius: 0;
+	/*border-radius: 0;*/
 }
 /*
 .answer-option:hover {
@@ -56,7 +109,7 @@ body {
 	width: 75%;
 }
 
-h1,
+/*h1,
 h2,
 h3 {
 	font-family: Georgia, Times, "Times New Roman", serif;
@@ -69,14 +122,14 @@ h1 {
 	font-size: 30px;
 	line-height: 49px;
 }
-
-h2,
+*/
+/*h2,
 h3 {
 	font-size: 22px;
 }
+*/
 
-
-
+/*
 .img-profile {
 	width: 200px;
 	float: left;
@@ -87,7 +140,7 @@ h3 {
 p {
 	text-align: justify;
 }
-
+*/
 
 
 
@@ -112,11 +165,12 @@ body {
 	clear: both;
 	font-size: 12px;
 
-	color: #ccc;
+	color: #000;
 	text-align: center;
 	/*background: #666;*/
-	background: #2C3E50;
-	border-top: 8px solid #18BC9C;
+	/*background: #2C3E50;*/
+	/*border-top: 8px solid #18BC9C;*/
+	/*border-top: 8px solid #333;*/
 	box-sizing: border-box;
 
 	position: absolute;
@@ -132,22 +186,9 @@ body {
 
 
 
-
-
-
-/* start hover styling */
-
-
-.img-social:hover {
-	cursor: pointer;
-	opacity: 0.8;
+.nav-item {
+	margin-left: 2em;
 }
-
-
-
-
-
-
 
 
 /* header/navbar */
@@ -172,6 +213,14 @@ body {
 
 .sidebar .card-header {
 	border-bottom: 2px solid rgba(0,0,0,0.125);
+}
+
+.card-footer h3 {
+	float: left;
+}
+
+.card-footer .message {
+	float: right;
 }
 
 

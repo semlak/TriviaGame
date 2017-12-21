@@ -1,6 +1,10 @@
 // delete this
 var game;
 
+const normalAnswerButtonClasss = "btn-outline-primary";
+const correctAnswerButtonClass = "btn-success";
+const incorrectAnswerButtonClass = "btn-warning"
+const unselectedAnswerButtonClass = "btn-primary-outline"
 
 const QuestionOutcomeEnum = {
 	CORRECT: "Correct",
@@ -54,6 +58,8 @@ let TriviaGame = class {
 		this.gameQuestions = shuffleArray(GameData.questions);
 		console.log(this.gameQuestions);
 		this.resetGame();
+		this.timePerQuestion = GameData.timePerQuestion;
+
 	}
 
 	resetGame() {
@@ -72,7 +78,7 @@ let TriviaGame = class {
 		this.allowUserInput = false;
 		// because the answers for each question will be random, I want to save the questions asked. Saving in this.askedQuestions
 		this.askedQuestions = [];
-		this.secondsLeft = GameData.timePerQuestion;
+		this.secondsLeft = this.timePerQuestion;
 		this.startGame();
 
 	}
@@ -82,7 +88,7 @@ let TriviaGame = class {
 		console.log("Answers Correct: ", this.correctQuestions);
 		// $("#question-card").hide();
 		$(".question-card").slideUp("slow");
-		$("#score-card").slideUp("fast", function() {
+		$(".score-card").slideUp("fast", function() {
 			me.addGameResultsCard();
 
 		})
@@ -126,6 +132,10 @@ let TriviaGame = class {
 	answerClicked(event) {
 		// console.log($(this));
 		let me = event.data.game;
+		$(".answer-option .btn").addClass("nohover disabled")
+		$(this).addClass("user-clicked")
+		$(".user-clicked").removeClass("nohover disabled");
+		// $(".answer-option")
 		clearInterval(me.referenceToQuestionTimer);
 		if (me.allowUserInput === false) {
 			// user has alread clicked before
@@ -148,12 +158,16 @@ let TriviaGame = class {
 			if (questionItem.playerAnswer === questionItem.correctAnswer) {
 				// user answer was correct.
 				console.log("correct answer");
+				$(".card-footer").fadeOut("fast", () => {
+					$(".card-footer").html("<strong>Correct</strong><div class='message'>Loading Next Question</div>").fadeIn("fast");
+				});
 				me.correctQuestions++;
 				me.askedQuestions[me.currentQuestion].questionOutcome = QuestionOutcomeEnum.CORRECT;
 				console.log(me.askedQuestions);
 			}
 			else {
 				console.log("incorrect answer");
+				$(".card-footer").html("<strong>Incorrect</strong>");
 				me.missedQuestions++;
 				me.askedQuestions[me.currentQuestion].questionOutcome = QuestionOutcomeEnum.INCORRECT;
 			}
@@ -161,11 +175,16 @@ let TriviaGame = class {
 			$(".answer-option .btn").each((i, item) => {
 				// if (item.)
 				if (item.innerText === questionItem.correctAnswer) {
-					$(item).removeClass("btn-danger").addClass("btn-primary");
+					$(item).removeClass(normalAnswerButtonClasss).addClass(correctAnswerButtonClass);
 				}
 				else if (item.innerText === questionItem.playerAnswer) {
 					// since the selected answer was not the correct answer (per the if branch), this was the incorrect answer
-					$(item).removeClass("btn-danger").addClass("btn-warning");
+					$(item).removeClass(normalAnswerButtonClasss).addClass(incorrectAnswerButtonClass);
+				}
+				// else if (!me.gameInProgress) {
+				else {
+					$(item).removeClass(normalAnswerButtonClasss).addClass(normalAnswerButtonClasss + " disabled");
+
 				}
 
 				console.log(item);
@@ -173,7 +192,7 @@ let TriviaGame = class {
 			setTimeout(function() {
 				me.showNextQuestion2();
 			}, 3000);
-		}, 300);
+		}, 1000);
 
 		// console.log(this.val());
 		// console.log(t.val());
@@ -181,10 +200,10 @@ let TriviaGame = class {
 
 	showNextQuestion2() {
 		let me = this;
-		this.currentQuestion++;
+		me.currentQuestion++;
 		console.log("getting question with index", me.currentQuestion);
 		let question = me.gameQuestions[me.currentQuestion];
-		this.secondsLeft = GameData.timePerQuestion;
+		me.secondsLeft = me.timePerQuestion;
 		if (this.currentQuestion >= this.gameQuestions.length || this.currentQuestion >= maxQuestions) {
 			// game over. show gameEndScreen
 			me.gameInProgress = false;
@@ -247,18 +266,22 @@ let TriviaGame = class {
 			let button = $("<div>").addClass("btn").text(answer);
 			var answerLI = $("<li>", {
 				class: "answer-option",
-			}).append();
+			});
+			if (!me.gameInProgress) {
+				button.addClass("nohover");
+			}
+
 			if (me.gameInProgress) {
-				button.addClass("btn-danger")
+				button.addClass(normalAnswerButtonClasss)
 			}
 			else if (answer === question.correctAnswer) {
-				button.addClass("btn-primary");
+				button.addClass(correctAnswerButtonClass);
 			}
 			else if (answer === question.playerAnswer) {
-				button.addClass("btn-warning");
+				button.addClass(incorrectAnswerButtonClass + " disabled");
 			}
 			else {
-				button.addClass("btn-danger")
+				button.addClass(normalAnswerButtonClasss + " disabled")
 			}
 			answerList.append(answerLI.append(button));
 
@@ -268,10 +291,25 @@ let TriviaGame = class {
 		let cardFooter = $("<div>").addClass('card-footer').html(
 			me.gameInProgress ?
 			"Time: <span id='seconds-left'>" + me.secondsLeft + "</span> seconds left" :
-			"Your Response was: " + question.questionOutcome
+			"Your Response was: <strong>" + question.questionOutcome + "</strong>"
 		);
+
 		questionCard.append(questionCardBody);
 		questionCard.append(cardFooter);
+		if (me.gameInProgress) {
+			// questionCard.append($("<br>"))
+			//questionCard.append($("<div>").addClass("progressbar").html('<div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>'))
+			// cardFooter.append($("<div>").html('<div class="progress"><div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div></div>'))
+			// cardFooter.append($("<div>").addClass("progress").html('<div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>'))
+			cardFooter.append($("<div>").addClass("progress").append($('<div>').addClass("progress-bar").attr("id", "timer").attr("role", "progressbar").attr("aria-valuenow", "100")))
+
+			// cardFooter.append($("<div>").html('<div class="progress"><div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div></div>'))
+			//.attr("aria-valuenow", "100").attr("aria-valuemin", "0").attr("aria-valuemax", "100")))
+			// .css("width", "100%")
+			//.style("width", "75%").attr("aria-valuenow", "75").attr("aria-valuemin", "0").attr("aria-valuemax", "100")))
+			//append($("<div>").addClass("progress-bar progress-bar-primary"))
+			// questionCard.append($("<div>").addClass("progress").append($("<div>").addClass("progress-bar").attr("role", "progressbar").attr("aria-valuenow", "50%")));
+		}
 		return questionCard;
 	}
 
@@ -282,26 +320,25 @@ let TriviaGame = class {
 			j = 0,
 			k = 0;
 		let resultsCard = $("<div>", {
-			class: "card",
-			id: "game-results-card"
-		}).append($("<div>")).addClass("card-header").html("<h3>Your Results</h3>")
+			class: "card game-results-card"
+		}).append($("<div>").addClass("card-header").html("<h1>Your Results</h1>"));
 		// let cardBody = $("<div>").addClass("card-body").text(me.correctQuestions)
 		let cardBody = $("<div>").addClass("card-body").html(
-			"<p>Correct: " + me.correctQuestions + "</p>" +
-			"<p>Incorrect: " + me.missedQuestions + "</p>" +
-			"<p>Incomplete: " + me.incompleteQuestions + "</p>" +
-			"<hr><h5>Individual Question Responses</h5>"
+			"<div>Correct: <strong>" + me.correctQuestions + "</strong></div>" +
+			"<div>Incorrect: <strong>" + me.missedQuestions + "</strong></div>" +
+			"<div>Incomplete: <strong>" + me.incompleteQuestions + "</strong></div>" +
+			"<hr><h3>Individual Question Responses</h3>"
 		);
 
-		let questionResults = $("<div>").addClass("jumbotron");
+		let questionResults = $("<div>").addClass("container");
 
 		me.askedQuestions.forEach(askedQuestion => {
 			questionResults.append(me.createQuestionCard1(askedQuestion));
 		})
-		cardBody.append(questionResults);
+		// cardBody.append(questionResults);
 		// cardBody.slideUp("fast", function() {
 		$("#game-container").slideUp("slow", () => {
-			$("#game-results-container").append(resultsCard.append(cardBody));
+			$("#game-results-container").append(resultsCard.append(cardBody, questionResults));
 			$("#game-container").slideDown("slow");
 		})
 
@@ -313,7 +350,7 @@ let TriviaGame = class {
 		let me = this;
 
 		// let scoreCard = $("#score-card");
-		let scoreCard = $("<div>").addClass("card").attr("id", "score-card");
+		let scoreCard = $("<div>").addClass("card score-card");
 		// questionCard.fadeOut("slow", function() {
 		// scoreCard.empty();
 		let cardHeader = $("<div>", {
@@ -336,9 +373,9 @@ let TriviaGame = class {
 		}]
 
 		elements.forEach(function(element) {
-			cardBody.append($("<p>", {
+			cardBody.append($("<div>", {
 				class: "card-text",
-				html: element.text + ": <span id=\"" + element.id + "\">0</span>"
+				html: element.text + ": <strong id=\"" + element.id + "\">0</strong>"
 			}))
 		})
 		// scoreCard.append(cardHeader, cardBody, cardFooter).fadeIn("fast");
@@ -351,7 +388,7 @@ let TriviaGame = class {
 	updateScoreCardOld() {
 		let me = this;
 
-		let scoreCard = $("#score-card");
+		let scoreCard = $(".score-card");
 		// questionCard.fadeOut("slow", function() {
 		scoreCard.empty();
 		let cardHeader = $("<div>", {
@@ -395,9 +432,36 @@ let TriviaGame = class {
 			else {
 				console.log("updating seconds left")
 				$("#seconds-left").text(me.secondsLeft)
+				if (me.secondsLeft < 6) {
+					$(".progress-bar").addClass("bg-danger");
+				}
+				let percent = .667;
+				let widthChange = (percent * $(".progress-bar").parent().width()) + "px"
+				$(".progress-bar").animate({
+					"width": "-=" + widthChange
+				}, 10000, "linear", function() {
+					console.log("updating progress bar");
+				})
 				me.secondsLeft--;
 			}
 		}, 1000);
+		// $("#question-card-container .card-footer").height($("#question-card-container .card-footer").outerHeight())
+		// let percent = .15;
+		// let widthChange = (percent * $(".progress-bar").parent().width()) + "px"
+
+		// console.log("\n\n\n\n\n\n", me, me.timePerQuestion);
+		// $(".progress-bar").animate({
+		// 	"width": 0
+		// }, ((me.timePerQuestion - 1) * 1000), function() {
+		// 	console.log("updating progress bar");
+		// })
+		// $(".progress-bar").each(function() {
+		// 	var progressBar = $(".progress-bar");
+		// 	progressBar.each(function(indx) {
+		// 		$(this).css("width", $(this).attr("aria-valuenow") + "%");
+		// 	});
+		// });
+
 
 	}
 
@@ -407,7 +471,7 @@ let TriviaGame = class {
 $(document).ready(function() {
 	game = new TriviaGame();
 
-	$(document).on("click", ".answer-option", {
+	$(document).on("click", ".answer-option .btn", {
 		game: game
 	}, game.answerClicked);
 
