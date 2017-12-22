@@ -13,7 +13,7 @@ const QuestionOutcomeEnum = {
 }
 
 
-const maxQuestions = 2;
+const maxQuestions = 50;
 
 function randomUpToN(n) {
 	// does not return n, but numbers between 0 and n-1
@@ -55,8 +55,6 @@ let arr = Array.from(Array(20 - 0).keys()).map(element => element + 0);
 
 let TriviaGame = class {
 	constructor() {
-		this.gameQuestions = shuffleArray(GameData.questions);
-		console.log(this.gameQuestions);
 		this.resetGame();
 		this.timePerQuestion = GameData.timePerQuestion;
 
@@ -64,9 +62,13 @@ let TriviaGame = class {
 
 	resetGame() {
 		// this restarts the game
+		$("question-card-container, score-card-container, game-results-container").empty();
 
 		// for this app, I think I can create a new game class. Maybe?
 		clearInterval(this.referenceToQuestionTimer);
+		this.gameQuestions = shuffleArray(GameData.questions);
+		console.log(this.gameQuestions);
+
 		this.score = 0;
 		this.missedQuestions = 0;
 		this.correctQuestions = 0;
